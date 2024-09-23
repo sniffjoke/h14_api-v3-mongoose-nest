@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, Res } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, Post, Req, Res } from "@nestjs/common";
 import { AuthService } from "../application/auth.service";
 import { Request, Response } from "express";
 import { UserCreateModel } from "../../users/api/models/input/create-user.input.model";
@@ -21,6 +21,7 @@ export class AuthController {
   }
 
   @Post("login")
+  @HttpCode(200)
   async login(
     @Body() loginDto: any,
     @Res({ passthrough: true }) response: Response
@@ -37,6 +38,7 @@ export class AuthController {
   }
 
   @Post("registration")
+  @HttpCode(204)
   async register(@Body() dto: UserCreateModel) {
     const userId = await this.usersService.createUser(dto, false)
     const newUser = await this.usersQueryRepository.userOutput(userId)
