@@ -20,7 +20,7 @@ export class UsersController {
 
     @Post()
     async createUser(@Body() dto: UserCreateModel): Promise<UserViewModel> {
-        const userId = await this.usersService.createUser(dto)
+        const userId = await this.usersService.createUser(dto, true)
         const newUser = await this.usersQueryRepository.userOutput(userId)
         return newUser
     }

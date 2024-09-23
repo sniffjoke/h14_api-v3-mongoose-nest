@@ -1,3 +1,7 @@
+// import * as dotenv from 'dotenv'
+// dotenv.config()
+// import { config } from 'dotenv';
+// config();
 import * as process from "node:process";
 
 export const SETTINGS = {
