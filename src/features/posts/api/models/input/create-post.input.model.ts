@@ -1,4 +1,4 @@
-export type PostCreateModel = {
+export class PostCreateModel {
     title: string;
     shortDescription: string;
     content: string;

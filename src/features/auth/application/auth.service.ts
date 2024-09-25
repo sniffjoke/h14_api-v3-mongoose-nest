@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import {Model} from "mongoose";
 import {InjectModel} from "@nestjs/mongoose";
-import {User} from "../domain/users.entity";
 import { TokensService } from "../../tokens/application/tokens.service";
+import { User } from "../../users/domain/users.entity";
 
 @Injectable()
 export class AuthService {
@@ -24,8 +24,8 @@ export class AuthService {
         }
     }
 
-    async getMe(bearerToken: string) {
-        const token = this.tokensService.getToken(bearerToken)
+    async getMe(bearerHeader: string) {
+        const token = this.tokensService.getToken(bearerHeader)
         const validateToken = this.tokensService.validateAccessToken(token)
         if (!validateToken) {
             throw new UnauthorizedException('Invalid access token');
@@ -40,7 +40,5 @@ export class AuthService {
             userId: findedUser._id,
         }
     }
-
-    async
-
+    
 }

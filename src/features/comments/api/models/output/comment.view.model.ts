@@ -1,20 +1,20 @@
 import {LikeStatus} from "../../../../posts/api/models/output/post.view.model";
 
-export type CommentatorInfo = {
+export class CommentatorInfoModel {
     userId: string;
     userLogin: string;
 }
 
-export type LikesInfo = {
+export class LikesInfo  {
     likesCount: number
     dislikesCount: number
     myStatus: LikeStatus
 }
 
-export type CommentViewModel = {
+export class CommentViewModel {
     id: string;
     content: string;
-    commentatorInfo: CommentatorInfo
+    commentatorInfo: CommentatorInfoModel
     createdAt: string;
     likesInfo: LikesInfo
 }

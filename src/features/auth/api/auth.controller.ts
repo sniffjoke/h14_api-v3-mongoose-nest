@@ -1,7 +1,7 @@
 import { Body, Controller, Get, HttpCode, Post, Req, Res } from "@nestjs/common";
 import { AuthService } from "../application/auth.service";
 import { Request, Response } from "express";
-import { UserCreateModel } from "../../users/api/models/input/create-user.input.model";
+import { RecoveryPasswordModel, UserCreateModel } from "../../users/api/models/input/create-user.input.model";
 import { UsersService } from "../../users/application/users.service";
 import { UsersQueryRepository } from "../../users/infrastructure/users.query-repository";
 
@@ -46,20 +46,26 @@ export class AuthController {
   }
 
   @Post("registration-confirmation")
-  async activateEmail(@Body() code: string) {
+  @HttpCode(204)
+  async activateEmail(@Body() dto: any) {
+    return await this.usersService.activateEmail(dto.code)
   }
 
   @Post("registration-email-resending")
-  async resendEmail(@Body() email: string) {
-
+  @HttpCode(204)
+  async resendEmail(@Body() dto: any) {
+    return await this.usersService.resendEmail(dto.email)
   }
 
   @Post("password-recovery")
-  async passwordRecovery(@Body() email: string) {
+  @HttpCode(204)
+  async passwordRecovery(@Body() dto: any) {
+    return await this.usersService.passwordRecovery(dto.email)
   }
 
   @Post("new-password")
-  async newPasswordApprove(@Body() newPassword: string, @Body() recoveryCode: string) {
+  async newPasswordApprove(@Body() recoveryPasswordData: RecoveryPasswordModel) {
+    return await this.usersService.approveNewPassword(recoveryPasswordData)
   }
 
 }

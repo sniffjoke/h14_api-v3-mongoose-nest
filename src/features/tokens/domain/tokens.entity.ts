@@ -10,7 +10,7 @@ export class TokenEntity {
 
     @Prop({type: String, required: true})
     refreshToken: string;
-
+//TODO: iat
     @Prop({type: Boolean, required: true})
     blackList: boolean;
 

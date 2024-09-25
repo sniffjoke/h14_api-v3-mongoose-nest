@@ -4,20 +4,20 @@ export enum LikeStatus {
     Dislike = 'Dislike'
 }
 
-type LikeDetails = {
+class LikeDetails {
     addedAt: string
     userId: string
     login: string
 }
 
-type ExtendedLikesInfo = {
+class ExtendedLikesInfo {
     likesCount: number;
     dislikesCount: number;
     myStatus: LikeStatus;
     newestLikes: LikeDetails[];
 }
 
-export type PostViewModel = {
+export class PostViewModel {
     id: string;
     title: string;
     shortDescription: string;

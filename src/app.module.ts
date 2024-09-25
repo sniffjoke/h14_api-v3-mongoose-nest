@@ -9,6 +9,7 @@ import { TestingModule } from "./features/testing/testing.module";
 import { AuthModule } from "./features/auth/auth.module";
 import { TokensModule } from "./features/tokens/tokens.module";
 import { MailerModule } from "@nestjs-modules/mailer";
+import { SETTINGS } from "./infrastructure/settings/settings";
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { MailerModule } from "@nestjs-modules/mailer";
       envFilePath: ".development.env",
       isGlobal: true,
     }),
-    MongooseModule.forRoot(process.env.MONGO_URI as string),
+    MongooseModule.forRoot(SETTINGS.PATH.MONGODB),
     MailerModule.forRoot({
       transport: {
         host: process.env.SMTP_HOST,

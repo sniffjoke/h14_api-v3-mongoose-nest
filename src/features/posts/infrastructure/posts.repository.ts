@@ -13,4 +13,8 @@ export class PostsRepository {
         return savePost
     }
 
+   // async getByIdOrThrow(): HydratedDocument<Post> {
+//
+// }
+
 }

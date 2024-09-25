@@ -2,6 +2,10 @@ import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
 import mongoose from "mongoose";
 import {LikeStatus} from "../api/models/output/post.view.model";
 
+class BaseEntity {
+    createdAt: Date
+}
+
 @Schema({timestamps: false, _id: false})
 export class NewestLikes {
     @Prop({type: String, required: true, default: new Date(Date.now()).toISOString()})

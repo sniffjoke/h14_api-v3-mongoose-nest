@@ -8,6 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bodyParser: true
   });
+  // app.setGlobalPrefix('api')
   // app.useGlobalFilters(new NotFoundExceptionFilter())
   app.use(cors({
     // credentials: true,

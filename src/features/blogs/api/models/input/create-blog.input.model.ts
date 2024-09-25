@@ -1,4 +1,4 @@
-export type BlogCreateModel = {
+export class BlogCreateModel {
     name: string;
     description: string;
     websiteUrl: string;

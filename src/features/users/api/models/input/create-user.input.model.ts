@@ -1,11 +1,16 @@
-export type UserCreateModel = {
+export class UserCreateModel {
     login: string;
     email: string;
     password: string;
 }
 
-export type EmailConfirmationModel = {
+export class EmailConfirmationModel {
     confirmationCode?: string
     expirationDate?: string
     isConfirmed: boolean
+}
+
+export class RecoveryPasswordModel {
+    newPassword: string
+    recoveryCode: string
 }

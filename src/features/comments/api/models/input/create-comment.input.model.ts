@@ -1,3 +1,3 @@
-export type CommentCreateModel = {
+export class CommentCreateModel {
     content: string
 }

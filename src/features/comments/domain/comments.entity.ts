@@ -1,9 +1,10 @@
 import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
 import {LikeStatus} from "../../posts/api/models/output/post.view.model";
 import mongoose from "mongoose";
+import { CommentatorInfoModel } from "../api/models/output/comment.view.model";
 
 @Schema({timestamps: false, _id: false})
-export class CommentatorInfo {
+export class CommentatorInfoEntity {
     @Prop({type: String, required: true, default: 'woe2j414129sfs93j'})
     userId: string;
 
@@ -34,8 +35,8 @@ export class CommentEntity {
     @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'Post'})
     postId: string
 
-    @Prop({type: CommentatorInfo, required: true, default: new CommentatorInfo})
-    commentatorInfo: CommentatorInfo;
+    @Prop({type: CommentatorInfoEntity, required: true, default: new CommentatorInfoEntity()})
+    commentatorInfo: CommentatorInfoModel;
 
     @Prop({type: LikesInfo, required: true, default: new LikesInfo})
     likesInfo: LikesInfo;

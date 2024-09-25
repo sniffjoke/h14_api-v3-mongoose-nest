@@ -1,8 +1,5 @@
-// import * as dotenv from 'dotenv'
-// dotenv.config()
-// import { config } from 'dotenv';
-// config();
-import * as process from "node:process";
+import { config } from 'dotenv';
+config({ path: '.development.env' });
 
 export const SETTINGS = {
     PORT: process.env.PORT || 5000,

@@ -20,8 +20,7 @@ export class TokensService {
           _id: userId
         },
         {
-          // secret: SETTINGS.VARIABLES.JWT_SECRET_ACCESS_TOKEN,
-          secret: process.env.JWT_SECRET_ACCESS,
+          secret: SETTINGS.VARIABLES.JWT_SECRET_ACCESS_TOKEN,
           expiresIn: "15m"
         }
       ),
@@ -30,8 +29,7 @@ export class TokensService {
           _id: userId
         },
         {
-          // secret: SETTINGS.VARIABLES.JWT_SECRET_REFRESH_TOKEN,
-          secret: process.env.JWT_SECRET_REFRESH,
+          secret: SETTINGS.VARIABLES.JWT_SECRET_REFRESH_TOKEN,
           expiresIn: "30m"
         }
       )
@@ -44,10 +42,9 @@ export class TokensService {
 
   validateAccessToken(token: string) {
     try {
-      // console.log(SETTINGS.VARIABLES.JWT_SECRET_ACCESS_TOKEN);
       const userData = this.jwtService.verify(
         token,
-        { secret: process.env.JWT_SECRET_ACCESS }
+        { secret: SETTINGS.VARIABLES.JWT_SECRET_ACCESS_TOKEN }
       );
       return userData;
     } catch (e) {
@@ -66,9 +63,9 @@ export class TokensService {
       return null;
     }
   }
-
-  getToken(bearerToken: string) {
-    const token = bearerToken.split(" ")[1];
+//TODO: brarer header
+  getToken(bearerHeader: string) {
+    const token = bearerHeader.split(" ")[1];
     return token;
   }
 

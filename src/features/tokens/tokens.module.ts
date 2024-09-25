@@ -27,6 +27,10 @@ import { TokenEntity, TokenSchema } from "./domain/tokens.entity";
   controllers: [],
   providers: [
     TokensService
+  ],
+  exports: [
+    TokensService,
+    JwtModule
   ]
 })
 export class TokensModule {}
