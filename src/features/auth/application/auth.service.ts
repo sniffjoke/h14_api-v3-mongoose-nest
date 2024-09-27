@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import {Model} from "mongoose";
 import {InjectModel} from "@nestjs/mongoose";
 import { TokensService } from "../../tokens/application/tokens.service";
@@ -18,7 +18,7 @@ export class AuthService {
     async login(loginDto: LoginDto) {
         const findedUser = await this.userModel.findOne({login: loginDto.loginOrEmail});
         if (!findedUser) {
-            throw new NotFoundException('User not found');
+            throw new UnauthorizedException('User not found');
         }
         const comparePass = await this.cryptoService.comparePassword(loginDto.password, findedUser.password);
         if (!comparePass) {

@@ -98,7 +98,7 @@ export class UsersService {
   async activateEmail(code: string) {
     const checkUserStatus = await this.findUserInDbByCode(code);
     if (!checkUserStatus) {
-      throw new NotFoundException(`User with code ${code} not found`);
+      throw new BadRequestException(`User with code ${code} not found`);
     }
     const updateUserInfo = await this.userModel.findByIdAndUpdate(checkUserStatus._id, {
       $set: {
@@ -118,7 +118,7 @@ export class UsersService {
   async resendEmail(email: string) {
     const isUserExists = await this.userModel.findOne({ email: email });
     if (!isUserExists) {
-      throw new NotFoundException(`User with email ${email} not found`);
+      throw new BadRequestException(`User with email ${email} not found`);
     }
     if (isUserExists.emailConfirmation.isConfirmed) {
       throw new BadRequestException(`User with email ${email} is confirmed`);
