@@ -9,8 +9,3 @@ export class EmailConfirmationModel {
     expirationDate?: string
     isConfirmed: boolean
 }
-
-export class RecoveryPasswordModel {
-    newPassword: string
-    recoveryCode: string
-}

@@ -5,12 +5,13 @@ import { InjectModel } from "@nestjs/mongoose";
 import { User } from "../domain/users.entity";
 import {
   EmailConfirmationModel,
-  RecoveryPasswordModel,
   UserCreateModel
 } from "../api/models/input/create-user.input.model";
 import { UuidService } from "nestjs-uuid";
 import { add } from "date-fns";
 import { MailerService } from "@nestjs-modules/mailer";
+import { CryptoService } from "../../crypto/application/crypto.service";
+import { RecoveryPasswordModel } from "../../auth/api/models/output/auth.output.model";
 
 @Injectable()
 export class UsersService {
@@ -18,7 +19,8 @@ export class UsersService {
     @InjectModel(User.name) private userModel: Model<User>,
     private readonly uuidService: UuidService,
     private readonly usersRepository: UsersRepository,
-    private readonly mailService: MailerService
+    private readonly mailService: MailerService,
+    private readonly cryptoService: CryptoService,
   ) {
   }
 
@@ -27,7 +29,8 @@ export class UsersService {
     if (!isConfirm) {
       await this.sendActivationEmail(user.email, emailConfirmation.confirmationCode as string);
     }
-    const newUser = new this.userModel({ ...user, emailConfirmation });
+    const hashPassword = await this.cryptoService.hashPassword(user.password);
+    const newUser = new this.userModel({ ...user, password: hashPassword, emailConfirmation });
     const saveData = await this.usersRepository.saveBlog(newUser);
     return saveData._id.toString();
   }
@@ -141,9 +144,6 @@ export class UsersService {
 
   async approveNewPassword(recoveryPasswordData: RecoveryPasswordModel) {
     const updateUserInfo = await this.updatePassword(recoveryPasswordData)
-    if (!updateUserInfo) {
-      throw new NotFoundException('Something went wrong');
-    }
     return updateUserInfo
   }
 

@@ -1,9 +1,16 @@
 import { Body, Controller, Get, HttpCode, Post, Req, Res } from "@nestjs/common";
 import { AuthService } from "../application/auth.service";
 import { Request, Response } from "express";
-import { RecoveryPasswordModel, UserCreateModel } from "../../users/api/models/input/create-user.input.model";
+import { UserCreateModel } from "../../users/api/models/input/create-user.input.model";
 import { UsersService } from "../../users/application/users.service";
 import { UsersQueryRepository } from "../../users/infrastructure/users.query-repository";
+import {
+  ActivateAccountDto,
+  LoginDto,
+  PasswordRecoveryDto,
+  ResendActivateCodeDto
+} from "./models/input/auth.input.model";
+import { AuthOutputModel, RecoveryPasswordModel } from "./models/output/auth.output.model";
 
 @Controller("auth")
 export class AuthController {
@@ -23,10 +30,10 @@ export class AuthController {
   @Post("login")
   @HttpCode(200)
   async login(
-    @Body() loginDto: any,
+    @Body() loginDto: LoginDto,
     @Res({ passthrough: true }) response: Response
-  ) {
-    const { accessToken, refreshToken } = await this.authService.login(loginDto.loginOrEmail);
+  ): Promise<AuthOutputModel> {
+    const { accessToken, refreshToken } = await this.authService.login(loginDto);
     response.cookie('refreshToken', refreshToken, {
       secure: true,
       httpOnly: true,
@@ -47,19 +54,19 @@ export class AuthController {
 
   @Post("registration-confirmation")
   @HttpCode(204)
-  async activateEmail(@Body() dto: any) {
+  async activateEmail(@Body() dto: ActivateAccountDto) {
     return await this.usersService.activateEmail(dto.code)
   }
 
   @Post("registration-email-resending")
   @HttpCode(204)
-  async resendEmail(@Body() dto: any) {
+  async resendEmail(@Body() dto: ResendActivateCodeDto) {
     return await this.usersService.resendEmail(dto.email)
   }
 
   @Post("password-recovery")
   @HttpCode(204)
-  async passwordRecovery(@Body() dto: any) {
+  async passwordRecovery(@Body() dto: PasswordRecoveryDto) {
     return await this.usersService.passwordRecovery(dto.email)
   }
 

@@ -7,10 +7,12 @@ import { UsersQueryRepository } from "./infrastructure/users.query-repository";
 import { User, UserSchema } from "./domain/users.entity";
 import { UuidModule } from "nestjs-uuid";
 import { TokensModule } from "../tokens/tokens.module";
+import { CryptoModule } from "../crypto/crypto.module";
 
 @Global()
 @Module({
   imports: [
+    CryptoModule,
     UuidModule,
     TokensModule,
     MongooseModule.forFeature([{
@@ -25,6 +27,7 @@ import { TokensModule } from "../tokens/tokens.module";
     UsersQueryRepository
   ],
   exports: [
+    CryptoModule,
     UuidModule,
     UsersService,
     UsersRepository,
