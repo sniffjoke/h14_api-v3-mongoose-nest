@@ -29,6 +29,7 @@ export class UsersController {
     }
 
     @Get(':id')
+    @UseGuards(BasicAuthGuard)
     async getUserById(@Param('id') id: string): Promise<UserViewModel> {
         const user = await this.usersQueryRepository.userOutput(id)
         return user
