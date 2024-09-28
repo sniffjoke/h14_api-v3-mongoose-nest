@@ -12,6 +12,7 @@ import { add } from "date-fns";
 import { MailerService } from "@nestjs-modules/mailer";
 import { CryptoService } from "../../crypto/application/crypto.service";
 import { RecoveryPasswordModel } from "../../auth/api/models/output/auth.output.model";
+import { SETTINGS } from "../../../infrastructure/settings/settings";
 
 @Injectable()
 export class UsersService {
@@ -27,7 +28,7 @@ export class UsersService {
   async createUser(user: UserCreateModel, isConfirm: boolean): Promise<string> {
     const emailConfirmation: EmailConfirmationModel = this.createEmailConfirmation(isConfirm);
     if (!isConfirm) {
-      await this.sendActivationEmail(user.email, emailConfirmation.confirmationCode as string);
+      await this.sendActivationEmail(user.email, `${SETTINGS.PATH.API_URL}/?code=${emailConfirmation.confirmationCode as string}`);
     }
     const hashPassword = await this.cryptoService.hashPassword(user.password);
     const newUser = new this.userModel({ ...user, password: hashPassword, emailConfirmation });
@@ -64,7 +65,7 @@ export class UsersService {
     await this.mailService.sendMail({
       from: process.env.SMTP_USER,
       to,
-      subject: "Активация аккаунта на " + process.env.API_URL,
+      subject: "Активация аккаунта на " + SETTINGS.PATH.API_URL,
       text: "",
       html:
         `
