@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Post, Req, Res } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, Post, Req, Res, UsePipes } from "@nestjs/common";
 import { AuthService } from "../application/auth.service";
 import { Request, Response } from "express";
 import { UserCreateModel } from "../../users/api/models/input/create-user.input.model";
@@ -11,6 +11,7 @@ import {
   ResendActivateCodeDto
 } from "./models/input/auth.input.model";
 import { AuthOutputModel, RecoveryPasswordModel } from "./models/output/auth.output.model";
+import { ValidationPipe } from "../../../infrastructure/pipes/validation.pipe";
 
 @Controller("auth")
 export class AuthController {
@@ -27,6 +28,7 @@ export class AuthController {
     return userData;
   }
 
+  @UsePipes(ValidationPipe)
   @Post("login")
   @HttpCode(200)
   async login(
