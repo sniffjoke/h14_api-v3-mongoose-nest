@@ -1,10 +1,11 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Post, Query, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, Query, UseGuards, UsePipes } from "@nestjs/common";
 import {UsersService} from "../application/users.service";
 import {UsersQueryRepository} from "../infrastructure/users.query-repository";
 import {UserCreateModel} from "./models/input/create-user.input.model";
 import {UserViewModel} from "./models/output/user.view.model";
 import {PaginationBaseModel} from "../../../infrastructure/base/pagination.base.model";
 import { BasicAuthGuard } from "../../../infrastructure/guards/basic-auth.guard";
+import { ValidationPipe } from "../../../infrastructure/pipes/validation.pipe";
 
 @Controller('users')
 export class UsersController {
@@ -14,12 +15,13 @@ export class UsersController {
     ) {}
 
     @Get()
-    @UseGuards(BasicAuthGuard)
+    // @UseGuards(BasicAuthGuard)
     async getAllUsers(@Query() query: any): Promise<PaginationBaseModel<UserViewModel>> {
         const users = await this.usersQueryRepository.getAllUsersWithQuery(query)
         return users
     }
 
+    @UsePipes(ValidationPipe)
     @Post()
     @UseGuards(BasicAuthGuard)
     async createUser(@Body() dto: UserCreateModel): Promise<UserViewModel> {
