@@ -8,7 +8,7 @@ import {
     Post,
     Put,
     Query,
-    UseFilters, UseGuards
+    UseFilters
 } from "@nestjs/common";
 import {BlogsService} from "../application/blogs.service";
 import {BlogsQueryRepository} from "../infrastructure/blogs.query-repository";
@@ -19,7 +19,6 @@ import {PostCreateModel} from "../../posts/api/models/input/create-post.input.mo
 import {PostsService} from "../../posts/application/posts.service";
 import {PostsQueryRepository} from "../../posts/infrastructure/posts.query-repository";
 import {NotFoundExceptionFilter} from "../../../infrastructure/common/exception-filters/not-found-exception-filter";
-import { JwtAuthGuard } from "../../../infrastructure/guards/jwt-auth.guard";
 
 @Controller('blogs')
 export class BlogsController {
@@ -31,7 +30,6 @@ export class BlogsController {
     ) {}
 
     @Get()
-    @UseGuards(JwtAuthGuard)
     async getAll(@Query() query: any) {
         const blogsWithQuery = await this.blogsQueryRepository.getAllBlogsWithQuery(query)
         return blogsWithQuery

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Post, Req, Res, UsePipes } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, Post, Req, Res, UseGuards, UsePipes } from "@nestjs/common";
 import { AuthService } from "../application/auth.service";
 import { Request, Response } from "express";
 import { UserCreateModel } from "../../users/api/models/input/create-user.input.model";
@@ -12,6 +12,7 @@ import {
 } from "./models/input/auth.input.model";
 import { AuthOutputModel, RecoveryPasswordModel } from "./models/output/auth.output.model";
 import { ValidationPipe } from "../../../infrastructure/pipes/validation.pipe";
+import { JwtAuthGuard } from "../../../infrastructure/guards/jwt-auth.guard";
 
 @Controller("auth")
 export class AuthController {
@@ -23,6 +24,7 @@ export class AuthController {
   }
 
   @Get("me")
+  @UseGuards(JwtAuthGuard)
   async getMe(@Req() req: Request) {
     const userData = await this.authService.getMe(req.headers.authorization as string);
     return userData;
@@ -47,11 +49,12 @@ export class AuthController {
   }
 
   @Post("registration")
-  // @HttpCode(204)
+  @HttpCode(204)
   async register(@Body() dto: UserCreateModel, @Res({ passthrough: true }) res: Response) {
     const userId = await this.usersService.createUser(dto, false)
     const newUser = await this.usersQueryRepository.userOutput(userId)
-    res.status(204).send('Письмо с активацией отправлено')
+    // res.status(204).send('Письмо с активацией отправлено')
+    return 'Письмо с активацией отправлено'
   }
 
   @Post("registration-confirmation")
