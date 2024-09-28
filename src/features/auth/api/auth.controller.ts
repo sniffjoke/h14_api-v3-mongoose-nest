@@ -51,7 +51,7 @@ export class AuthController {
   async register(@Body() dto: UserCreateModel) {
     const userId = await this.usersService.createUser(dto, false)
     const newUser = await this.usersQueryRepository.userOutput(userId)
-    return newUser
+    return 'Письмо с активацией отправлено'
   }
 
   @Post("registration-confirmation")
