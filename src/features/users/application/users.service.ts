@@ -56,6 +56,7 @@ export class UsersService {
       ).toString()
     };
     const emailConfirmationIsConfirm: EmailConfirmationModel = {
+      confirmationCode: this.uuidService.generate(),
       isConfirmed: true
     };
     return isConfirm ? emailConfirmationIsConfirm : emailConfirmationNotConfirm;
