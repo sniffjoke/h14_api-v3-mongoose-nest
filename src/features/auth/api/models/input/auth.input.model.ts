@@ -1,4 +1,4 @@
-import { IsString, Length } from "class-validator";
+import { IsEmail, IsString, Length } from "class-validator";
 
 export class LoginDto {
   @IsString({message: 'Должно быть строковым значением'})
@@ -15,6 +15,8 @@ export class ActivateAccountDto {
 }
 
 export class ResendActivateCodeDto {
+  @IsString({message: 'Должно быть строковым значением'})
+  @IsEmail({}, {message: 'Е-майл должен быть валидным'})
   email: string
 }
 

@@ -10,6 +10,8 @@ import { AuthModule } from "./features/auth/auth.module";
 import { TokensModule } from "./features/tokens/tokens.module";
 import { MailerModule } from "@nestjs-modules/mailer";
 import { SETTINGS } from "./infrastructure/settings/settings";
+import { LoginIsExistConstraint } from "./infrastructure/decorators/login-is-exist";
+import { EmailIsExistConstraint } from "./infrastructure/decorators/email-is-exist";
 
 @Module({
   imports: [
@@ -34,7 +36,7 @@ import { SETTINGS } from "./infrastructure/settings/settings";
     CommentsModule,
     TestingModule,
     AuthModule,
-    TokensModule,
+    TokensModule
   ],
   controllers: [],
   providers: [
@@ -42,6 +44,8 @@ import { SETTINGS } from "./infrastructure/settings/settings";
     //     provide: APP_FILTER,
     //     useClass: NotFoundExceptionFilter
     // }
+    LoginIsExistConstraint,
+    EmailIsExistConstraint
   ]
 })
 export class AppModule {}

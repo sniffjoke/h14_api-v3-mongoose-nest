@@ -63,6 +63,7 @@ export class AuthController {
     return await this.usersService.activateEmail(dto.code)
   }
 
+  @UsePipes(ValidationPipe)
   @Post("registration-email-resending")
   @HttpCode(204)
   async resendEmail(@Body() dto: ResendActivateCodeDto) {

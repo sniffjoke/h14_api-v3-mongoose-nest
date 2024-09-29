@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import cors from "cors-ts";
 import {SETTINGS} from "./infrastructure/settings/settings";
-// import {NotFoundExceptionFilter} from "./infrastructure/common/exception-filters/not-found-exception-filter";
+import { useContainer } from "class-validator";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -13,6 +13,7 @@ async function bootstrap() {
   app.use(cors({
     // credentials: true,
   }))
+  useContainer(app.select(AppModule), {fallbackOnErrors: true})
   await app.listen(SETTINGS.PORT, () => console.log('DB connect'));
   // app.use(cookieParser())
 }
