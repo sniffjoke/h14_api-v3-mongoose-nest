@@ -14,6 +14,7 @@ import { LoginIsExistConstraint } from "./infrastructure/decorators/login-is-exi
 import { EmailIsExistConstraint } from "./infrastructure/decorators/email-is-exist.decorator";
 import { CheckEmailStatusConstraint } from "./infrastructure/decorators/check-email-status.decorator";
 import { CheckCodeStatusConstraint } from "./infrastructure/decorators/check-code-status.decorator";
+import { CodeIsExistConstraint } from "./infrastructure/decorators/code-is-exist.decorator";
 
 @Module({
   imports: [
@@ -49,7 +50,8 @@ import { CheckCodeStatusConstraint } from "./infrastructure/decorators/check-cod
     LoginIsExistConstraint,
     EmailIsExistConstraint,
     CheckEmailStatusConstraint,
-    CheckCodeStatusConstraint
+    CheckCodeStatusConstraint,
+    CodeIsExistConstraint
   ]
 })
 export class AppModule {}

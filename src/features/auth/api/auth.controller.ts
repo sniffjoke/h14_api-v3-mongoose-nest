@@ -57,6 +57,7 @@ export class AuthController {
     return newUser
   }
 
+  @UsePipes(ValidationPipe)
   @Post("registration-confirmation")
   @HttpCode(204)
   async activateEmail(@Body() dto: ActivateAccountDto) {

@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { UsersRepository } from "../infrastructure/users.repository";
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
@@ -56,7 +56,6 @@ export class UsersService {
       ).toString()
     };
     const emailConfirmationIsConfirm: EmailConfirmationModel = {
-      confirmationCode: this.uuidService.generate(),
       isConfirmed: true
     };
     return isConfirm ? emailConfirmationIsConfirm : emailConfirmationNotConfirm;
@@ -97,10 +96,10 @@ export class UsersService {
     });
   }
 
-  private async findUserInDbByCode(confirmationCode: string) {
-    const checkActivate = await this.userModel.findOne({ "emailConfirmation.confirmationCode": confirmationCode });
-    return checkActivate;
-  }
+  // private async findUserInDbByCode(confirmationCode: string) {
+  //   const checkActivate = await this.userModel.findOne({ "emailConfirmation.confirmationCode": confirmationCode });
+  //   return checkActivate;
+  // }
 
   async resendEmail(email: string) {
     const checkStatus = await this.usersRepository.checkUserStatus(email);
@@ -109,17 +108,16 @@ export class UsersService {
   }
 
   async activateEmail(code: string) {
-    const checkUserStatus = await this.findUserInDbByCode(code);
-    if (!checkUserStatus) {
-      throw new BadRequestException(`User with code ${code} not found`);
-    }
-    const updateUserInfo = await this.userModel.findByIdAndUpdate(checkUserStatus._id, {
-      $set: {
-        emailConfirmation: {
-          isConfirmed: true
-        }
-      }
-    });
+    // const checkUserStatus = await this.findUserInDbByCode(code);
+    // if (!checkUserStatus) {
+    //   throw new BadRequestException(`User with code ${code} not found`);
+    // }
+    const checkCodeStatus = await this.usersRepository.checkCodeStatus(code);
+    const updateUserInfo = await this.userModel.findByIdAndUpdate(
+      checkCodeStatus._id,
+      {$set: {'emailConfirmation.isConfirmed': true}},
+      { new: true }
+    );
     return updateUserInfo;
   }
 
