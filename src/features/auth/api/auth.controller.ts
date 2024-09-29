@@ -48,14 +48,13 @@ export class AuthController {
     };
   }
 
+  @UsePipes(ValidationPipe)
   @Post("registration")
   @HttpCode(204)
-  async register(@Body() dto: UserCreateModel, @Res({ passthrough: true }) res: Response) {
+  async register(@Body() dto: UserCreateModel) {
     const userId = await this.usersService.createUser(dto, false)
     const newUser = await this.usersQueryRepository.userOutput(userId)
-    // res.status(204).send('Письмо с активацией отправлено')
-    // return 'Письмо с активацией отправлено'
-    return userId
+    return newUser
   }
 
   @Post("registration-confirmation")

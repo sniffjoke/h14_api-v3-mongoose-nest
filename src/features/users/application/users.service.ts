@@ -134,7 +134,7 @@ export class UsersService {
     //     throw ApiError.BadRequest('Email не существует', email)
     // }
     const emailConfirmation: EmailConfirmationModel = this.createEmailConfirmation(false);
-    await this.sendRecoveryMail(email, emailConfirmation.confirmationCode as string);
+    await this.sendRecoveryMail(email, `${SETTINGS.PATH.API_URL}/?code=${emailConfirmation.confirmationCode as string}`);
     const updateUserInfo = await this.userModel.updateOne({ email }, {
       $set: {
         "emailConfirmation.confirmationCode": emailConfirmation.confirmationCode
