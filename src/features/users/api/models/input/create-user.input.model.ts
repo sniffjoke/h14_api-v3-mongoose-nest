@@ -1,6 +1,6 @@
 import { IsEmail, IsString, Length } from "class-validator";
-import { LoginExists } from "../../../../../infrastructure/decorators/login-is-exist";
-import { EmailExists } from "../../../../../infrastructure/decorators/email-is-exist";
+import { LoginExists } from "../../../../../infrastructure/decorators/login-is-exist.decorator";
+import { EmailExists } from "../../../../../infrastructure/decorators/email-is-exist.decorator";
 
 export class UserCreateModel {
     @IsString({message: 'Должно быть строкой'})

@@ -32,4 +32,23 @@ export class UsersRepository {
         return findedUser
     }
 
+    async checkUserStatus(emailValue: string) {
+        const findedUser = await this.findUserByEmail(emailValue)
+        if (findedUser.emailConfirmation.isConfirmed) {
+            throw new NotFoundException("User already confirmed")
+        }
+        return true
+    }
+
+    async checkCodeStatus(code: string) {
+        const findedUser = await this.userModel.findOne({ "emailConfirmation.confirmationCode": code });
+        if (!findedUser) {
+            throw new NotFoundException("User not found")
+        }
+        if (findedUser.emailConfirmation.isConfirmed) {
+            throw new NotFoundException("User already confirmed")
+        }
+        return true
+    }
+
 }

@@ -1,4 +1,6 @@
 import { IsEmail, IsString, Length } from "class-validator";
+import { CheckEmailStatus } from "../../../../../infrastructure/decorators/check-email-status.decorator";
+import { CheckCodeStatus } from "../../../../../infrastructure/decorators/check-code-status.decorator";
 
 export class LoginDto {
   @IsString({message: 'Должно быть строковым значением'})
@@ -11,12 +13,15 @@ export class LoginDto {
 }
 
 export class ActivateAccountDto {
+  @IsString({message: 'Должно быть строковым значением'})
+  @CheckCodeStatus()
   code: string
 }
 
 export class ResendActivateCodeDto {
   @IsString({message: 'Должно быть строковым значением'})
   @IsEmail({}, {message: 'Е-майл должен быть валидным'})
+  @CheckEmailStatus()
   email: string
 }
 

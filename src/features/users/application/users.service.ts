@@ -21,7 +21,7 @@ export class UsersService {
     private readonly uuidService: UuidService,
     private readonly usersRepository: UsersRepository,
     private readonly mailService: MailerService,
-    private readonly cryptoService: CryptoService,
+    private readonly cryptoService: CryptoService
   ) {
   }
 
@@ -96,6 +96,17 @@ export class UsersService {
     });
   }
 
+  private async findUserInDbByCode(confirmationCode: string) {
+    const checkActivate = await this.userModel.findOne({ "emailConfirmation.confirmationCode": confirmationCode });
+    return checkActivate;
+  }
+
+  async resendEmail(email: string) {
+    const checkStatus = await this.usersRepository.checkUserStatus(email);
+    const emailConfirmation: EmailConfirmationModel = this.createEmailConfirmation(false);
+    return await this.sendActivationEmail(email, `${SETTINGS.PATH.API_URL}/?code=${emailConfirmation.confirmationCode as string}`);
+  }
+
   async activateEmail(code: string) {
     const checkUserStatus = await this.findUserInDbByCode(code);
     if (!checkUserStatus) {
@@ -109,23 +120,6 @@ export class UsersService {
       }
     });
     return updateUserInfo;
-  }
-
-  private async findUserInDbByCode(confirmationCode: string) {
-    const checkActivate = await this.userModel.findOne({ "emailConfirmation.confirmationCode": confirmationCode });
-    return checkActivate;
-  }
-
-  async resendEmail(email: string) {
-    const isUserExists = await this.userModel.findOne({ email: email });
-    if (!isUserExists) {
-      throw new BadRequestException(`User with email ${email} not found`);
-    }
-    if (isUserExists.emailConfirmation.isConfirmed) {
-      throw new BadRequestException(`User with email ${email} is confirmed`);
-    }
-    const emailConfirmation: EmailConfirmationModel = this.createEmailConfirmation(false);
-    return await this.sendActivationEmail(email, `${SETTINGS.PATH.API_URL}/?code=${emailConfirmation.confirmationCode as string}`);
   }
 
   async passwordRecovery(email: string) {
@@ -144,12 +138,12 @@ export class UsersService {
   }
 
   async approveNewPassword(recoveryPasswordData: RecoveryPasswordModel) {
-    const updateUserInfo = await this.updatePassword(recoveryPasswordData)
-    return updateUserInfo
+    const updateUserInfo = await this.updatePassword(recoveryPasswordData);
+    return updateUserInfo;
   }
 
   private async updatePassword(recoveryPasswordData: RecoveryPasswordModel) {
-    const user = await this.userModel.findOne({'emailConfirmation.confirmationCode': recoveryPasswordData.recoveryCode})
+    const user = await this.userModel.findOne({ "emailConfirmation.confirmationCode": recoveryPasswordData.recoveryCode });
     if (!user) {
       throw new NotFoundException(`User with code ${recoveryPasswordData.recoveryCode} not found`);
     }
@@ -159,8 +153,8 @@ export class UsersService {
     // }
     // const hashPassword = await cryptoService.hashPassword(password)
     // const updateUserInfo = await usersRepository.updateUserPassword(user.email, hashPassword)
-    const updateUserInfo = await this.userModel.findByIdAndUpdate(user._id, {password: recoveryPasswordData.newPassword})
-    return updateUserInfo
+    const updateUserInfo = await this.userModel.findByIdAndUpdate(user._id, { password: recoveryPasswordData.newPassword });
+    return updateUserInfo;
   }
 
 }
