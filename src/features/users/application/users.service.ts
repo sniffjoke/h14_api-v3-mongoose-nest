@@ -125,7 +125,7 @@ export class UsersService {
       throw new BadRequestException(`User with email ${email} is confirmed`);
     }
     const emailConfirmation: EmailConfirmationModel = this.createEmailConfirmation(false);
-    return await this.sendActivationEmail(email, emailConfirmation.confirmationCode as string);
+    return await this.sendActivationEmail(email, `${SETTINGS.PATH.API_URL}/?code=${emailConfirmation.confirmationCode as string}`);
   }
 
   async passwordRecovery(email: string) {
