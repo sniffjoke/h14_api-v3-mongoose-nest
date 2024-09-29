@@ -9,7 +9,7 @@ import { UsersRepository } from "../../features/users/infrastructure/users.repos
 import { CheckEmailStatusConstraint } from "./check-email-status.decorator";
 
 
-@ValidatorConstraint({ name: "check-email-status", async: true })
+@ValidatorConstraint({ name: "check-code-status", async: true })
 @Injectable()
 export class CheckCodeStatusConstraint implements ValidatorConstraintInterface {
   constructor(private readonly usersRepository: UsersRepository) {
@@ -38,7 +38,7 @@ export function CheckCodeStatus(property?: string, validationOptions?: Validatio
       propertyName: propertyName,
       options: validationOptions,
       constraints: [property],
-      validator: CheckEmailStatusConstraint
+      validator: CheckCodeStatusConstraint
     });
   };
 }

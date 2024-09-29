@@ -50,8 +50,8 @@ import { CodeIsExistConstraint } from "./infrastructure/decorators/code-is-exist
     LoginIsExistConstraint,
     EmailIsExistConstraint,
     CheckEmailStatusConstraint,
-    CheckCodeStatusConstraint,
-    CodeIsExistConstraint
+    CodeIsExistConstraint,
+    CheckCodeStatusConstraint
   ]
 })
 export class AppModule {}
