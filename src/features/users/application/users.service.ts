@@ -104,7 +104,15 @@ export class UsersService {
   async resendEmail(email: string) {
     const checkStatus = await this.usersRepository.checkUserStatus(email);
     const emailConfirmation: EmailConfirmationModel = this.createEmailConfirmation(false);
-    return this.sendActivationEmail(email, `${SETTINGS.PATH.API_URL}/?code=${emailConfirmation.confirmationCode as string}`);
+    await this.sendActivationEmail(email, `${SETTINGS.PATH.API_URL}/?code=${emailConfirmation.confirmationCode as string}`);
+    const updateUserInfo = await this.userModel.findOneAndUpdate(
+      {email},
+      {$set: {
+        emailConfirmationConfirmation: emailConfirmation.confirmationCode as string
+        }},
+      { new: true }
+    );
+    return updateUserInfo;
   }
 
   async activateEmail(code: string) {
