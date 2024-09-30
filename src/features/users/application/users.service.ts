@@ -108,7 +108,7 @@ export class UsersService {
     const updateUserInfo = await this.userModel.findOneAndUpdate(
       {email},
       {$set: {
-        emailConfirmationConfirmation: emailConfirmation.confirmationCode as string
+        emailConfirmation: emailConfirmation.confirmationCode as string
         }},
       { new: true }
     );
