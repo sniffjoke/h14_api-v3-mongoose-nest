@@ -62,7 +62,7 @@ export class UsersService {
   }
 
   private async sendActivationEmail(to: string, link: string) {
-    await this.mailService.sendMail({
+     this.mailService.sendMail({
       from: process.env.SMTP_USER,
       to,
       subject: "Активация аккаунта на " + SETTINGS.PATH.API_URL,
@@ -104,7 +104,7 @@ export class UsersService {
   async resendEmail(email: string) {
     const checkStatus = await this.usersRepository.checkUserStatus(email);
     const emailConfirmation: EmailConfirmationModel = this.createEmailConfirmation(false);
-    return await this.sendActivationEmail(email, `${SETTINGS.PATH.API_URL}/?code=${emailConfirmation.confirmationCode as string}`);
+    return this.sendActivationEmail(email, `${SETTINGS.PATH.API_URL}/?code=${emailConfirmation.confirmationCode as string}`);
   }
 
   async activateEmail(code: string) {
