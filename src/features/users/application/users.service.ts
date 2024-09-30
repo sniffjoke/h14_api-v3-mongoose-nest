@@ -28,7 +28,7 @@ export class UsersService {
   async createUser(user: UserCreateModel, isConfirm: boolean): Promise<string> {
     const emailConfirmation: EmailConfirmationModel = this.createEmailConfirmation(isConfirm);
     if (!isConfirm) {
-      await this.sendActivationEmail(user.email, `${SETTINGS.PATH.API_URL}/?code=${emailConfirmation.confirmationCode as string}`);
+       this.sendActivationEmail(user.email, `${SETTINGS.PATH.API_URL}/?code=${emailConfirmation.confirmationCode as string}`);
     }
     const hashPassword = await this.cryptoService.hashPassword(user.password);
     const newUser = new this.userModel({ ...user, password: hashPassword, emailConfirmation });
